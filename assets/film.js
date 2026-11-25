@@ -14,11 +14,17 @@
 
   /* ---------- herói ---------- */
   (function () {
-    var v = $('hero-video'); if (!v || RM) return;
+    var v = $('hero-video'), root = document.documentElement, timer = 0; if (!v) return;
+    function still(on) { root.classList.toggle('hero-still', on); }
+    if (RM) { still(true); return; }
+    v.addEventListener('playing', function () { clearTimeout(timer); still(false); });
+    v.addEventListener('error', function () { still(true); });
     function go() {
-      if (v.src || frozen() || !/^(#inicio)?$/.test(location.hash)) return;
+      if (v.src || !/^(#inicio|#conteudo|#vibracoes)?$/.test(location.hash)) return;
+      if (frozen()) { still(true); return; }
       v.src = v.getAttribute('data-hero'); v.playbackRate = .75;
-      var p = v.play(); if (p && p.catch) p.catch(function () { v.removeAttribute('src'); v.load(); });
+      timer = setTimeout(function () { if (v.readyState < 3) still(true); }, 5000);
+      var p = v.play(); if (p && p.catch) p.catch(function (e) { if (e.name !== 'AbortError') still(true); });
     }
     go(); addEventListener('hashchange', function () { setTimeout(go, 60); });
     onMotion(function () { if (frozen()) v.pause(); else if (v.src && !v.ended) v.play(); else go(); });
