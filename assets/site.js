@@ -97,11 +97,11 @@
       function ck(el, id, text) { if (!err(el, id, text)) { good = false; if (!firstBad) firstBad = el; } }
       ck(F.name, 'e-name', F.name.value.trim() ? '' : L('Escreva o seu nome.', 'Please enter your name.'));
       var em = F.email.value.trim();
-      ck(F.email, 'e-email', !em ? L('Escreva o seu email.', 'Please enter your email.') : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) ? L('Este email não parece completo. Exemplo: nome@exemplo.pt', 'This email does not look complete. Example: name@example.com') : '');
+      ck(F.email, 'e-email', !em ? L('Escreva o seu email.', 'Please enter your email address.') : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) ? L('Este email não parece completo. Exemplo: nome@exemplo.pt', 'This email address looks incomplete. For example: name@example.com') : '');
       var fw = $('f-who'), ft = $('f-topic');
-      ck(fw, 'e-who', fw.selectedIndex ? '' : L('Escolha quem é.', 'Choose who you are.')); ck(ft, 'e-topic', ft.selectedIndex ? '' : L('Escolha um assunto.', 'Choose a subject.'));
+      ck(fw, 'e-who', fw.selectedIndex ? '' : L('Escolha a opção que melhor o descreve.', 'Please tell us which best describes you.')); ck(ft, 'e-topic', ft.selectedIndex ? '' : L('Escolha um assunto.', 'Please choose a subject.'));
       ck(F.msg, 'e-msg', F.msg.value.trim().length < 10 ? L('Escreva uma mensagem com pelo menos 10 caracteres.', 'Please write a message of at least 10 characters.') : '');
-      ck(F.ok, 'e-ok', F.ok.checked ? '' : L('Para continuar, aceite o uso dos dados para resposta.', 'To continue, please agree to us using your details to reply.'));
+      ck(F.ok, 'e-ok', F.ok.checked ? '' : L('Para continuar, aceite que usemos os seus dados para lhe responder.', 'To continue, please agree that we may use your details to reply.'));
       return { good: good, first: firstBad };
     }
     [F.name, F.email, F.msg].forEach(function (el) { el.addEventListener('blur', function () { if (el.getAttribute('aria-invalid') === 'true') check(); }); });
@@ -116,7 +116,7 @@
       st.innerHTML = '';
       var b = document.createElement('b'); b.textContent = L('O seu programa de email deve abrir agora.', 'Your email app should open now.');
       var p = document.createElement('span');
-      p.appendChild(document.createTextNode(L('Confirme e carregue em enviar. Se nada abrir, escreva diretamente para ', 'Check it and press send. If nothing opens, write to us directly at ')));
+      p.appendChild(document.createTextNode(L('Reveja a mensagem e carregue em enviar. Se nada abrir, escreva-nos diretamente para ', 'Check the message and press send. If nothing opens, email us directly at ')));
       var a = document.createElement('a'); a.href = href; a.textContent = to; p.appendChild(a); p.appendChild(document.createTextNode('.'));
       st.appendChild(b); st.appendChild(p);
       var cp = document.createElement('button'); cp.type = 'button'; cp.className = 'btn line'; cp.textContent = L('Copiar mensagem', 'Copy message'); cp.addEventListener('click', function () { navigator.clipboard.writeText(to + '\n' + subject + '\n\n' + body).then(function () { cp.textContent = L('Copiada', 'Copied'); }, function () {}); }); st.appendChild(cp);
@@ -129,31 +129,31 @@
   var PARTS = [
     { g: 'ext', hi: ['A02YYUW_frontal'], p: [0, -0.095, 0.037], n: [0, -0.6, 0.8], o: [8, 104, 0.3],
       k: L('Deteção', 'Detection'), t: L('Sensor frontal', 'Front sensor'),
-      d: L('Ultrassónico à prova de água, apontado em frente. Deteta obstáculos de 20 cm a 4,5 m e faz vibrar o motor do dedo indicador.', 'Waterproof ultrasonic sensor pointing straight ahead. It detects obstacles from 20 cm to 4.5 m and drives the index-finger motor.') },
+      d: L('Sensor ultrassónico resistente à água, apontado em frente. Deteta obstáculos no seu caminho e faz vibrar o motor junto ao dedo indicador.', 'A waterproof ultrasonic sensor facing straight ahead. It picks up obstacles in your path and warns you through the motor under your index finger.') },
     { g: 'ext', hi: ['A02YYUW_cima'], p: [0, -0.03, 0.041], n: [0, 0, 1], o: [10, 66, 0.3],
-      k: L('Deteção', 'Detection'), t: L('Sensor de cabeça', 'Head-height sensor'),
-      d: L('Segundo ultrassónico, inclinado para cima, para ramos, placas e outros obstáculos entre a cintura e a cabeça. Avisa pelo motor do polegar.', 'A second ultrasonic sensor, tilted upwards, for branches, signs and other obstacles between waist and head. It warns through the thumb motor.') },
+      k: L('Deteção', 'Detection'), t: L('Sensor superior', 'Head-height sensor'),
+      d: L('Segundo sensor ultrassónico, inclinado para cima, para ramos, placas e outros obstáculos entre a cintura e a cabeça. Avisa pelo motor do polegar.', 'A second ultrasonic sensor, pointing upwards, for branches, signs and other obstacles between your waist and your head. It warns you through the motor under your thumb.') },
     { g: 'ext', hi: ['Botao_'], p: [0, 0.02, 0.021], n: [0, 0, 1], o: [14, 70, 0.24],
       k: L('Controlo', 'Control'), t: L('Botão', 'Button'),
-      d: L('O único botão, à prova de água, debaixo do polegar. Bateria, descrição do ambiente, bloqueio de rumo e SOS, conforme o gesto.', 'The only button, waterproof, under the thumb. Battery level, scene description, heading lock and SOS, depending on the gesture.') },
+      d: L('O único botão, resistente à água, fica debaixo do polegar. Conforme o gesto, indica a bateria, pede a descrição do ambiente, liga o guia de rumo ou pede ajuda.', 'A single waterproof button under your thumb. Depending on how you press it, it tells you the battery level, describes your surroundings, locks your heading or calls for help.') },
     { g: 'ext', hi: ['LED_estado'], p: [0.012, 0.003, 0.018], n: [0.4, 0, 1], o: [34, 70, 0.3],
       k: L('Estado', 'Status'), t: L('Luz de estado', 'Status light'),
-      d: L('Mostra a carga e a ligação ao telemóvel a quem acompanha o utilizador.', 'Shows the charge level and phone connection to whoever is with the user.') },
+      d: L('Indica a carga e a ligação ao telemóvel, o que é útil para quem acompanha a pessoa.', 'Shows the battery level and phone connection to anyone who is with you.') },
     { g: 'ext', hi: ['USB-C_'], p: [0, 0.2065, 0], n: [0, 1, 0.2], o: [30, 30, 0.24],
       k: L('Energia', 'Power'), t: L('Entrada USB-C', 'USB-C port'),
-      d: L('Carregamento por cabo, na ponta da pega, protegido por uma tampa de borracha.', 'Cable charging at the end of the handle, protected by a rubber cap.') },
+      d: L('Para carregar por cabo. Fica na ponta da pega, protegida por uma tampa de borracha.', 'For charging by cable. It sits at the end of the handle, under a rubber cap.') },
     { g: 'int', hi: ['Celula_'], p: [0, 0.1425, 0.004], n: [0, 0, 1], o: [20, 74, 0.3],
       k: L('Energia', 'Power'), t: L('Bateria', 'Battery'),
-      d: L('Célula de iões de lítio de 3350 mAh, em invólucro metálico rígido. Fica ao longo do eixo, junto à mão, para a pega não pesar no pulso.', '3350 mAh lithium-ion cell in a rigid metal case. It sits along the axis, close to the hand, so the handle does not strain the wrist.') },
+      d: L('Bateria de iões de lítio pensada para durar o dia todo. Fica ao longo do eixo, junto à mão, para a pega não pesar no pulso.', 'A rechargeable battery designed to last the whole day, in a sturdy metal case. It runs along the handle, close to your hand, so it does not tire your wrist.') },
     { g: 'int', hi: ['Bobina_', 'Recetor_'], p: [0, 0.173, -0.0141], n: [0, 0, -1], o: [160, 80, 0.3],
       k: L('Energia', 'Power'), t: L('Bobina de carregamento', 'Charging coil'),
-      d: L('Recebe energia por indução quando a pega é pousada na base. Sem fichas para acertar.', 'Receives power by induction when the handle rests on the base. No plugs to line up.') },
+      d: L('Carrega a bateria por indução quando pousa a pega na base, sem fichas para encaixar.', 'Charges the cane by induction when you rest the handle on its base. There is no plug to find.') },
     { g: 'int', hi: ['ESP32-S3_'], p: [-0.0132, -0.058, 0.0037], n: [-1, 0, 0.2], o: [-70, 80, 0.28],
       k: L('Eletrónica', 'Electronics'), t: L('Processador', 'Processor'),
-      d: L('O cérebro da bengala. Lê os sensores dez vezes por segundo, comanda os motores e liga-se ao telemóvel por Bluetooth encriptado.', 'The brain of the cane. It reads the sensors ten times a second, drives the motors and connects to the phone over encrypted Bluetooth.') },
+      d: L('O cérebro da bengala. Lê os sensores várias vezes por segundo, comanda os motores e liga-se ao telemóvel por Bluetooth encriptado.', 'The brain of the cane. It reads the sensors many times a second, controls the motors and connects securely to your phone.') },
     { g: 'int', hi: ['BNO085_'], p: [0.0127, -0.065, 0.004], n: [1, 0, 0.2], o: [70, 84, 0.26],
       k: L('Eletrónica', 'Electronics'), t: L('Sensor de movimento', 'Motion sensor'),
-      d: L('Acelerómetro, giroscópio e bússola num só componente. Dá a direção ao bloqueio de rumo e percebe quando a bengala cai.', 'Accelerometer, gyroscope and compass in one part. It gives the heading lock its direction and notices when the cane falls.') },
+      d: L('Junta a bússola e os sensores de movimento. Dá a direção ao guia de rumo e percebe quando a bengala cai.', 'A compass and motion sensor in one. It keeps track of your direction for the heading lock and notices if the cane falls.') },
     { g: 'int', hi: ['Buzzer'], p: [0, -0.015, -0.0105], n: [0, 0, -1], o: [170, 84, 0.26],
       k: L('Eletrónica', 'Electronics'), t: L('Sinal sonoro', 'Buzzer'),
       d: L('Ajuda a encontrar a bengala caída e funciona como sirene de emergência.', 'Helps you find a dropped cane and doubles as an emergency siren.') },
@@ -165,10 +165,10 @@
       d: L('Debaixo do polegar. Avisa de obstáculos à altura da cabeça.', 'Under the thumb. It warns of obstacles at head height.') },
     { g: 'int', hi: ['Motor_esquerdo'], p: [-0.0153, 0.065, -0.0008], n: [-1, 0, 0], o: [-80, 80, 0.24],
       k: L('Vibração', 'Vibration'), t: L('Motor esquerdo', 'Left motor'),
-      d: L('Na palma da mão. Pede uma correção para a esquerda quando se desvia do rumo fixado.', 'In the palm. It asks you to correct to the left when you drift off the locked heading.') },
+      d: L('Na palma da mão. Pede uma correção para a esquerda quando se desvia da direção escolhida.', 'In the palm. It tells you to bear left when you drift off your locked heading.') },
     { g: 'int', hi: ['Motor_direito'], p: [0.0141, 0.05, -0.0068], n: [1, 0, 0], o: [80, 80, 0.24],
       k: L('Vibração', 'Vibration'), t: L('Motor direito', 'Right motor'),
-      d: L('Sob as pontas dos dedos. Pede uma correção para a direita.', 'Under the fingertips. It asks you to correct to the right.') }
+      d: L('Sob as pontas dos dedos. Pede uma correção para a direita.', 'Under the fingertips. It tells you to bear right.') }
   ];
   var explorer = null, loading = false;
   function loadModel() {

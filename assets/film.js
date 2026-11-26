@@ -71,7 +71,7 @@
     /* pontos de câmara em coordenadas do fotograma: x, y, zoom */
     var CAM = [[800, 330, 1], innerWidth < 1000 ? [500, 325, 1.25] : [680, 330, 1.3], [455, 285, 1.75], [752, 325, 1.95], [1085, 350, 1.85]];
     /* x, y, legenda, deslocação da legenda, alinhamento */
-    var MARKS = { 1: [[428, 318, 'ESP32-S3', -64, 92, 'middle']], 2: [[366, 248, L('Frontal', 'Front'), -74, -56, 'end'], [512, 226, L('Superior', 'Top'), 30, -92, 'middle']], 3: [[679, 288, L('Indicador', 'Index'), -34, -84, 'middle'], [786, 298, L('Polegar', 'Thumb'), 40, -96, 'middle'], [809, 334, L('Palma', 'Palm'), 92, 106, 'middle'], [747, 361, L('Dedos', 'Fingers'), -40, 100, 'middle']], 4: [[1035, 350, '3350 mAh', -20, -104, 'middle'], [1120, 393, L('Indução', 'Induction'), 30, 92, 'middle']] };
+    var MARKS = { 1: [[428, 318, L('Processador', 'Processor'), -64, 92, 'middle']], 2: [[366, 248, L('Frontal', 'Front'), -74, -56, 'end'], [512, 226, L('Superior', 'Top'), 30, -92, 'middle']], 3: [[679, 288, L('Indicador', 'Index'), -34, -84, 'middle'], [786, 298, L('Polegar', 'Thumb'), 40, -96, 'middle'], [809, 334, L('Palma', 'Palm'), 92, 106, 'middle'], [747, 361, L('Dedos', 'Fingers'), -40, 100, 'middle']], 4: [[1035, 350, L('Bateria', 'Battery'), -20, -104, 'middle'], [1120, 393, L('Indução', 'Induction'), 30, 92, 'middle']] };
     var SPOT = [null, [430, 318, 190], [440, 245, 200], [752, 325, 165], [1090, 352, 230]];
     var MID = [.1, .42, .575, .735, .93], BND = [.31, .49, .645, .8];
     function chapter(p) { for (var i = 0; i < 4; i++) if (p < BND[i]) return i; return 4; }
@@ -159,7 +159,7 @@
       $('o-head').textContent = dh === 0 ? L('no rumo', 'on course') : Math.abs(dh) + '° ' + side(dh > 0);
       f.setAttribute('aria-valuetext', m(f.value) + ', ' + txt(S.f)); t.setAttribute('aria-valuetext', m(t.value) + ', ' + txt(S.t)); h.setAttribute('aria-valuetext', $('o-head').textContent);
       [f, t, h].forEach(fill);
-      var s = L('À frente: ', 'Ahead: ') + txt(S.f) + '. ' + L('Em cima: ', 'Overhead: ') + txt(S.t) + '. ' + L('Rumo: ', 'Heading: ') + (dev ? L('virar à ', 'turn ') + side(dh < 0) : L('alinhado', 'aligned')) + '.';
+      var s = L('À frente: ', 'Ahead: ') + txt(S.f) + '. ' + L('Em cima: ', 'Overhead: ') + txt(S.t) + '. ' + L('Direção: ', 'Heading: ') + (dev ? L('virar à ', 'turn ') + side(dh < 0) : L('no rumo certo', 'aligned')) + '.';
       clearTimeout(rt); rt = setTimeout(function () { if (s !== lastReadout) { lastReadout = s; out.textContent = s; } }, 160);
       if (paused) still();
     }
@@ -233,7 +233,7 @@
     b.addEventListener('click', function () {
       var on = b.getAttribute('aria-checked') !== 'true'; b.setAttribute('aria-checked', on ? 'true' : 'false'); d.setAttribute('data-on', on ? 'true' : 'false');
       [].forEach.call(d.querySelectorAll('.unit-phone .caps li'), function (e, i) { e.style.setProperty('--i', i); var s = e.querySelector('.sr'); if (!on && !s) { s = document.createElement('span'); s.className = 'sr'; s.textContent = L(' (indisponível)', ' (unavailable)'); e.appendChild(s); } else if (on && s) s.remove(); });
-      $('sw-msg').textContent = on ? L('Ligado. O telemóvel acrescenta alertas, localização e voz.', 'Connected. The phone adds alerts, location and voice.') : L('Desligado. A bengala avisa com três pulsos longos e continua a proteger.', 'Off. The cane warns you with three long pulses and keeps protecting you.');
+      $('sw-msg').textContent = on ? L('Ligado. Com o telemóvel, tem também alertas aos cuidadores, localização e descrição por voz.', 'Connected. Your phone adds alerts, location and spoken descriptions.') : L('Desligado. A bengala avisa com três pulsos longos e continua a detetar obstáculos.', 'Phone off. The cane gives three long pulses and keeps detecting obstacles.');
     });
   })();
 
@@ -259,14 +259,14 @@
       if (state === 'hold' && auto) { idle(L('Simulação parada.', 'Simulation stopped.')); return; }
       if (state === 'count') { clearTimeout(timer); auto = false; set('cancel', L('Cancelado', 'Cancelled'), L('SOS cancelado.', 'SOS cancelled.')); timer = setTimeout(idle, 1600); return; }
       if (state !== 'idle' && state !== 'cancel') return;
-      clearTimeout(timer); set('hold', auto ? L('A simular', 'Simulating') : L('Continue a premir', 'Keep holding'), L('A premir. Três segundos.', 'Holding. Three seconds.'));
+      clearTimeout(timer); set('hold', auto ? L('A simular', 'Simulating') : L('Continue a premir', 'Keep holding'), L('A premir. Mantenha durante três segundos.', 'Holding. Keep going for three seconds.'));
       timer = setTimeout(function () { n = 5; tick(); }, 3000);
     }
     function tick() {
-      if (n === 0) { set('sent', L('Alerta enviado', 'Alert sent'), L('Demonstração: alerta enviado aos contactos.', 'Demonstration: alert sent to contacts.')); timer = setTimeout(function () { set('ack', L('O João vai ajudar', 'João is on the way'), L('O João confirmou que vai ajudar.', 'João confirmed they are on the way.')); timer = setTimeout(idle, 4200); }, 2200); return; }
+      if (n === 0) { set('sent', L('Alerta enviado', 'Alert sent'), L('Demonstração: o alerta foi enviado aos contactos.', 'Demonstration only: in real use, your contacts would now get an alert.')); timer = setTimeout(function () { set('ack', L('O João vai ajudar', 'João is on the way'), L('O João confirmou que vai ajudar.', 'João has confirmed he is on the way.')); timer = setTimeout(idle, 4200); }, 2200); return; }
       set('count', L('Tocar para cancelar, ', 'Tap to cancel, ') + n, n === 5 ? L('Contagem de cinco segundos. Toque para cancelar.', 'Five-second countdown. Tap to cancel.') : ''); n--; timer = setTimeout(tick, 1000);
     }
-    function up() { if (state === 'hold' && !auto) idle(L('Largou antes dos três segundos. Nada foi enviado.', 'Released before three seconds. Nothing was sent.')); }
+    function up() { if (state === 'hold' && !auto) idle(L('Largou o botão antes dos três segundos. Não foi enviado nenhum alerta.', 'Released too early. Nothing was sent.')); }
     b.addEventListener('pointerdown', function (e) { if (e.button) return; pressed = Date.now(); if (state !== 'hold') auto = false; down(); });
     ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach(function (e) { b.addEventListener(e, up); });
     /* leitores de ecrã enviam apenas um clique: a sequência corre sozinha */
